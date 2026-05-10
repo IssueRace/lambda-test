@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lambda Task</title>
+    <style>
+        body { padding: 50px; font-family: sans-serif; }
+        .box { border: 1px solid #ccc; padding: 20px; width: 300px; }
+        input { width: 100%; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h3>Analyze Text</h3>
+        <input type="text" id="inp" placeholder="text here...">
+        <button onclick="run()">Send to Cloud</button>
+        <div id="out" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        function run() {
+            var val = document.getElementById('inp').value;
+            var out = document.getElementById('out');
+            
+            fetch('/api/index?t=' + encodeURIComponent(val))
+                .then(r => r.json())
+                .then(data => {
+                    if(data.err) {
+                        out.innerText = 'Error: ' + data.err;
+                    } else {
+                        out.innerHTML = 'Length: ' + data.len + '<br>Words: ' + data.words + '<br>Upper: ' + data.up;
+                    }
+                });
+        }
+    </script>
+</body>
+</html>
